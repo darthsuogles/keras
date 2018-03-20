@@ -4,7 +4,7 @@ ENV python_version=3.6
 ENV tensorflow_version=1.6.0
 
 # Install system packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --allow-downgrades --no-install-recommends \
       bzip2 \
       g++ \
       git \
@@ -12,7 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libgl1-mesa-glx \
       libhdf5-dev \
       openmpi-bin \
-      wget && \
+      wget \
+      libcudnn7=7.0.5.15-1+cuda9.0 \
+      libcudnn7-dev=7.0.5.15-1+cuda9.0 \
+      && \
     rm -rf /var/lib/apt/lists/*
 
 # Install conda

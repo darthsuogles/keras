@@ -38,11 +38,12 @@ USER $NB_USER
 ARG python_version=3.6
 
 RUN conda install -y python=${python_version} && \
-    pip install --upgrade pip && \
+    pip install --upgrade pip \
+    && \
     pip install \
       sklearn_pandas \
-      tensorflow-gpu && \
-    pip install https://cntk.ai/PythonWheel/GPU/cntk-2.1-cp36-cp36m-linux_x86_64.whl && \
+      tensorflow-gpu \
+    && \
     conda install \
       bcolz \
       h5py \
@@ -56,12 +57,10 @@ RUN conda install -y python=${python_version} && \
       pyyaml \
       scikit-learn \
       six \
-      theano && \
+    && \
     git clone git://github.com/keras-team/keras.git /src && pip install -e /src[tests] && \
     pip install git+git://github.com/keras-team/keras.git && \
     conda clean -yt
-
-ADD theanorc /home/keras/.theanorc
 
 ENV PYTHONPATH='/src/:$PYTHONPATH'
 
@@ -70,4 +69,3 @@ WORKDIR /src
 EXPOSE 8888
 
 CMD jupyter notebook --port=8888 --ip=0.0.0.0
-

@@ -1,5 +1,8 @@
 ARG cuda_version=9.0
 ARG cudnn_version=7
+ARG python_version=3.6
+ARG tensorflow_version=1.6.0
+
 FROM nvidia/cuda:${cuda_version}-cudnn${cudnn_version}-devel
 
 # Install system packages
@@ -35,14 +38,12 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
 
 USER $NB_USER
 
-ARG python_version=3.6
-
 RUN conda install -y python=${python_version} && \
     pip install --upgrade pip \
     && \
     pip install \
       sklearn_pandas \
-      tensorflow-gpu \
+      tensorflow-gpu="${tensorflow_version}" \
     && \
     conda install \
       bcolz \

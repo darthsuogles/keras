@@ -1,9 +1,7 @@
-ARG cuda_version=9.0
-ARG cudnn_version=7
-ARG python_version=3.6
-ARG tensorflow_version=1.6.0
+FROM nvidia/cuda:9.0-cudnn7-devel
 
-FROM nvidia/cuda:${cuda_version}-cudnn${cudnn_version}-devel
+ENV python_version=3.6
+ENV tensorflow_version=1.6.0
 
 # Install system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -43,7 +41,7 @@ RUN conda install -y python=${python_version} && \
     && \
     pip install \
       sklearn_pandas \
-      tensorflow-gpu="${tensorflow_version}" \
+      tensorflow-gpu==${tensorflow_version} \
     && \
     conda install \
       bcolz \

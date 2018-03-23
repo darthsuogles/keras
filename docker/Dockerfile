@@ -64,10 +64,17 @@ RUN conda install -y python=${python_version} && \
     pip install git+git://github.com/keras-team/keras.git && \
     conda clean -yt
 
+# Add keras build to python source
 ENV PYTHONPATH='/src/:$PYTHONPATH'
 
-WORKDIR /src
+# We will mount all user provided directories under /workspace
+USER root
+RUN mkdir -p /workspace && chown -R "${NB_USER}" /workspace
+
+USER "${NB_USER}"
+WORKDIR /workspace
 
 EXPOSE 8888
 
-CMD jupyter notebook --port=8888 --ip=0.0.0.0
+COPY entrypoint.sh /container/entrypoint.sh
+ENTRYPOINT ["/container/entrypoint.sh"]
